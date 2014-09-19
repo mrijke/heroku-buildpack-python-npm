@@ -54,7 +54,6 @@ TMP_APP_DIR=$CACHE_DIR/tmp_app_dir
 
 bpwatch start compile
 
-
 # We'll need to send these statics to other scripts we `source`.
 export BUILD_DIR CACHE_DIR BIN_DIR PROFILE_PATH
 
@@ -79,6 +78,11 @@ bpwatch stop anvil_appdir_stage
 bpwatch start appdir_stage
   deep-mv $BUILD_DIR $APP_DIR
 bpwatch stop appdir_stage
+
+
+if [ -f $BIN_DIR/install_nodejs ]; then
+  $BIN_DIR/install_nodejs
+fi
 
 # Set new context.
 ORIG_BUILD_DIR=$BUILD_DIR
@@ -146,6 +150,13 @@ mkdir .heroku &> /dev/null
 set -e
 
 mkdir -p $(dirname $PROFILE_PATH)
+
+echo "-----> Installing dependencies with npm"
+for dependency in $(cat $BUILD_DIR/npm_requirements.txt)
+do
+    npm -g install $dependency
+done
+echo "Dependencies installed" | indent
 
 # Install Python.
 source $BIN_DIR/steps/python
