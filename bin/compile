@@ -80,9 +80,9 @@ bpwatch start appdir_stage
 bpwatch stop appdir_stage
 
 
-if [ -f $BIN_DIR/install_nodejs ]; then
-  $BIN_DIR/install_nodejs
-fi
+#if [ -f $BIN_DIR/install_nodejs ]; then
+#  $BIN_DIR/install_nodejs
+#fi
 
 # Set new context.
 ORIG_BUILD_DIR=$BUILD_DIR
