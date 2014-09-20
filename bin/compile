@@ -151,17 +151,17 @@ set -e
 
 mkdir -p $(dirname $PROFILE_PATH)
 
-#if [ -f $BUILD_DIR/npm_requirements.txt ]; then
+if [ -f $BUILD_DIR/npm_requirements.txt ]; then
   #we have npm requirements to install...
   #but first link /usr/bin/node to /usr/bin/nodejs
-#  ln -s -f /usr/bin/nodejs /usr/bin/node
-#  echo "-----> Installing dependencies with npm"
-#  for dependency in $(cat $BUILD_DIR/npm_requirements.txt)
-#  do
-#    npm -g install $dependency
-#  done
-#  echo "Dependencies installed" | indent
-#fi
+  ln -s -f /usr/bin/nodejs /usr/bin/node
+  echo "-----> Installing dependencies with npm"
+  for dependency in $(cat $BUILD_DIR/npm_requirements.txt)
+  do
+    npm -g install $dependency
+  done
+  echo "Dependencies installed" | indent
+fi
 
 # Install Python.
 source $BIN_DIR/steps/python
