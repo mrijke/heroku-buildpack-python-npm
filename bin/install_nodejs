@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -eo pipefail
+set -eox pipefail
 
 echo $PWD
  
@@ -23,7 +23,9 @@ pushd $BUILD_DIR/.heroku/vendor
 rm -rf node
 mv $tempdir/$NODE_BASENAME node
 popd
- 
+
+ls $BUILD_DIR/.heroku/
+
 ln -sf ../../vendor/node/bin/node .heroku/python/bin/node
 ln -sf ../../vendor/node/bin/node-waf .heroku/python/bin/node-waf
 ln -sf ../../vendor/node/bin/npm .heroku/python/bin/npm
