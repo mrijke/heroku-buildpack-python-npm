@@ -30,4 +30,6 @@ ln -sf ../../vendor/node/bin/node .heroku/python/bin/node
 ln -sf ../../vendor/node/bin/node-waf .heroku/python/bin/node-waf
 ln -sf ../../vendor/node/bin/npm .heroku/python/bin/npm
 
-PATH=$PWD/.heroku/python/bin:$PATH
+ls -alh .heroku/python/bin
+
+PATH=$PWD/.heroku/python/bin$PATH
