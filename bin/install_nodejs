@@ -24,7 +24,7 @@ rm -rf node
 mv $tempdir/$NODE_BASENAME node
 popd
 
-ls .heroku/
+mkdir -v -p .heroku/python/bin/
 
 ln -sf ../../vendor/node/bin/node .heroku/python/bin/node
 ln -sf ../../vendor/node/bin/node-waf .heroku/python/bin/node-waf
