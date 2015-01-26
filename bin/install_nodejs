@@ -5,12 +5,12 @@ heroku_dir=$BUILD_DIR/.heroku
 
 # Resolve non-specific node versions using semver.herokuapp.com
 if ! [[ "$node_engine" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-    info "Resolving node version ${node_engine:-(latest stable)} via semver.io..."
+    echo "       Resolving node version ${node_engine:-(latest stable)} via semver.io..."
     node_engine=$(curl --silent --get --data-urlencode "range=${node_engine}" https://semver.herokuapp.com/node/resolve)
 fi
 
 # Download node from Heroku's S3 mirror of nodejs.org/dist
-info "Downloading and installing node $node_engine..."
+echo "       Downloading and installing node $node_engine..."
 node_url="http://s3pository.heroku.com/node/v$node_engine/node-v$node_engine-linux-x64.tar.gz"
 curl $node_url -s -o - | tar xzf - -C /tmp
 
