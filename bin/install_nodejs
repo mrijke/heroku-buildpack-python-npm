@@ -3,7 +3,7 @@ set -eox pipefail
 
 heroku_dir=$BUILD_DIR/.heroku
 
-if [ ! -f $heroku_dir/node/bin/npm ]; then
+if [ ! -e $heroku_dir/node/bin/npm ]; then
 	#only install if needed
 	# Resolve non-specific node versions using semver.herokuapp.com
 	if ! [[ "$node_engine" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
