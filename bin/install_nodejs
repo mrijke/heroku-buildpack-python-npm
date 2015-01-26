@@ -31,5 +31,7 @@ ln -sf ../../vendor/node/bin/node-waf .heroku/python/bin/node-waf
 ln -sf ../../vendor/node/bin/npm .heroku/python/bin/npm
 
 ls -alh .heroku/python/bin
+echo "----------"
+ls -alk ../../vendor/node/bin
 
 PATH=$PWD/.heroku/python/bin$PATH
