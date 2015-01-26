@@ -29,3 +29,5 @@ mkdir -v -p .heroku/python/bin/
 ln -sf ../../vendor/node/bin/node .heroku/python/bin/node
 ln -sf ../../vendor/node/bin/node-waf .heroku/python/bin/node-waf
 ln -sf ../../vendor/node/bin/npm .heroku/python/bin/npm
+
+PATH=$heroku_dir/python/bin:$PATH
