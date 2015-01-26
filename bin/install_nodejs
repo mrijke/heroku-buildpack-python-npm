@@ -1,37 +1,22 @@
 #!/usr/bin/env bash
 set -eox pipefail
 
-echo $PWD
- 
-NODE_VERSION=$(curl --silent --get https://semver.io/node/stable)
-NODE_BASENAME=node-v${NODE_VERSION}-linux-x64
-NODE_ARCHIVE="http://nodejs.org/dist/v${NODE_VERSION}/${NODE_BASENAME}.tar.gz"
- 
-# make a temp directory
-tempdir="$( mktemp -t node_XXXX )"
-rm -rf $tempdir
-mkdir -p $tempdir
- 
-pushd $tempdir
-curl -s -L -o tmp-nodejs.tar.gz $NODE_ARCHIVE
-tar -zxvf tmp-nodejs.tar.gz > /dev/null
-rm tmp-nodejs.tar.gz
-popd
- 
-mkdir -v -p $BUILD_DIR/.heroku/vendor
-pushd $BUILD_DIR/.heroku/vendor
-rm -rf node
-mv $tempdir/$NODE_BASENAME node
-popd
+local node_engine=$1
 
-mkdir -v -p .heroku/python/bin/
+heroku_dir=$BUILD_DIR/.heroku
 
-ln -sf ../../vendor/node/bin/node .heroku/python/bin/node
-ln -sf ../../vendor/node/bin/node-waf .heroku/python/bin/node-waf
-ln -sf ../../vendor/node/bin/npm .heroku/python/bin/npm
+# Resolve non-specific node versions using semver.herokuapp.com
+if ! [[ "$node_engine" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+    info "Resolving node version ${node_engine:-(latest stable)} via semver.io..."
+    node_engine=$(curl --silent --get --data-urlencode "range=${node_engine}" https://semver.herokuapp.com/node/resolve)
+fi
 
-ls -alh .heroku/python/bin
-echo "----------"
-ls -alk ../../vendor/node/bin
+# Download node from Heroku's S3 mirror of nodejs.org/dist
+info "Downloading and installing node $node_engine..."
+node_url="http://s3pository.heroku.com/node/v$node_engine/node-v$node_engine-linux-x64.tar.gz"
+curl $node_url -s -o - | tar xzf - -C /tmp
 
-PATH=$PWD/.heroku/python/bin$PATH
+# Move node (and npm) into .heroku/node and make them executable
+mv /tmp/node-v$node_engine-linux-x64/* $heroku_dir/node
+chmod +x $heroku_dir/node/bin/*
+PATH=$heroku_dir/node/bin:$PATH
