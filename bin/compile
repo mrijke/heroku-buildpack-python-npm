@@ -80,16 +80,12 @@ bpwatch start appdir_stage
 bpwatch stop appdir_stage
 
 
-if [ -f $BIN_DIR/install_nodejs ]; then
-  $BIN_DIR/install_nodejs
-fi
-
 # Set new context.
 ORIG_BUILD_DIR=$BUILD_DIR
 BUILD_DIR=$APP_DIR
 
 # Prepend proper path buildpack use.
-export PATH=$BUILD_DIR/.heroku/python/bin:$BUILD_DIR/.heroku/vendor/bin:$PATH
+export PATH=$BUILD_DIR/.heroku/node/bin/:$BUILD_DIR/.heroku/python/bin:$BUILD_DIR/.heroku/vendor/bin:$PATH
 export PYTHONUNBUFFERED=1
 export LANG=en_US.UTF-8
 export C_INCLUDE_PATH=/app/.heroku/vendor/include:$BUILD_DIR/.heroku/vendor/include:/app/.heroku/python/include
@@ -152,9 +148,11 @@ set -e
 mkdir -p $(dirname $PROFILE_PATH)
 
 if [ -f $BUILD_DIR/npm_requirements.txt ]; then
+  $BIN_DIR/install_nodejs
   #we have npm requirements to install...
   #but first link /usr/bin/node to /usr/bin/nodejs
   echo "-----> Installing dependencies with npm"
+  echo 
   for dependency in $(cat $BUILD_DIR/npm_requirements.txt)
   do
     npm -g install $dependency
