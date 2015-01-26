@@ -156,7 +156,12 @@ if [ -f $BUILD_DIR/npm_requirements.txt ]; then
   echo 
   for dependency in $(cat $BUILD_DIR/npm_requirements.txt)
   do
-    npm -g install $dependency
+    #check if its installed already
+    if [ ! -e /app/.heroku/node/lib/node_modules/$dependency ]; then
+	npm -g install $dependency
+    else
+	echo "$dependency already installed" | indent
+    fi
   done
   echo "Dependencies installed" | indent
 fi
