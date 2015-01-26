@@ -18,4 +18,5 @@ mkdir -vp $heroku_dir/node
 # Move node (and npm) into .heroku/node and make them executable
 mv /tmp/node-v$node_engine-linux-x64/* $heroku_dir/node
 chmod +x $heroku_dir/node/bin/*
-PATH=$heroku_dir/node/bin:$PATH
+ls -alh $heroku_dir/node/bin/
+PATH=$heroku_dir/node/bin$PATH
